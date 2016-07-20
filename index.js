@@ -22,27 +22,27 @@ app.get('/', function(req, res){
   res.send('It worxsdfsdfsdfdfdsfks!');
 });
 
-app.post('/post', function(req, res){
-  	var parsed_url = url.format({
-    pathname: 'https://yoda.p.mashape.com/yoda',
-    query: {
-    	sentence: req.body.text
-    }
-});
+// app.post('/post', function(req, res){
+//   	var parsed_url = url.format({
+//     pathname: 'https://yoda.p.mashape.com/yoda',
+//     query: {
+//     	q: req.body.text
+//     }
+// });
 
-request(parsed_url, function(error, res, body) {
-	if(!error && res.statusCode == 200) {
-		var data = JSON.parse(body);
-		var first_url = data.response.hits[0].result.url;
+// request(parsed_url, function(error, res, body) {
+// 	if(!error && res.statusCode == 200) {
+// 		var data = JSON.parse(body);
+// 		var first_url = data.response.hits[0].result.url;
 
-		var body = {
-			response_type: "in_channel",
-			text: first_url
-		};
+// 		var body = {
+// 			response_type: "in_channel",
+// 			text: first_url
+// 		};
 
-		res.send(body);
-	}
-})
+// 		res.send(body);
+// 	}
+// });
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
