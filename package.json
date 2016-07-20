@@ -12,6 +12,6 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git://github.com/genevievecm/slackbot.git"
+    "url": "https://github.com/genevievecm/slackbot.git"
   }
 }
