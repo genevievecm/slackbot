@@ -18,31 +18,31 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //use 3000 if it isn’t set
 app.set('port', process.env.PORT || 3000);
 
-// app.get('/', function(req, res){
-//   res.send('It worxsdfsdfsdfdfdsfks!');
-// });
-
-app.post('/post', function(req, res){
-  	var parsed_url = url.format({
-    pathname: 'https://yoda.p.mashape.com/yoda',
-    query: {
-    	sentence: req.body.text
-    }
+app.get('/', function(req, res){
+  res.send('It worxsdfsdfsdfdfdsfks!');
 });
 
-request(parsed_url, function(error, res, body) {
-	if(!error && res.statusCode == 200) {
-		var data = JSON.parse(body);
-		var first_url = data.response.hits[0].result.url;
+// app.post('/post', function(req, res){
+//   	var parsed_url = url.format({
+//     pathname: 'https://yoda.p.mashape.com/yoda',
+//     query: {
+//     	sentence: req.body.text
+//     }
+// });
 
-		var body = {
-			response_type: "in_channel",
-			text: first_url
-		};
+// request(parsed_url, function(error, res, body) {
+// 	if(!error && res.statusCode == 200) {
+// 		var data = JSON.parse(body);
+// 		var first_url = data.response.hits[0].result.url;
 
-		res.send(body);
-	}
-})
+// 		var body = {
+// 			response_type: "in_channel",
+// 			text: first_url
+// 		};
+
+// 		res.send(body);
+// 	}
+// })
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
