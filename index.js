@@ -23,8 +23,7 @@ app.get('/', function(req, res){
 });
 
 app.post('/post', function(req, res){
-
-  	var parsed_url = url.format({
+	var parsed_url = url.format({
 	    pathname: 'https://yoda.p.mashape.com/yoda',
 	    query: {
     		sentence: req.body.text
@@ -32,24 +31,27 @@ app.post('/post', function(req, res){
     	}
   	});
 
-	request({
-		headers: {
-			'X-Mashape-Key': 'BHWHnbH00kmsh2NYnEL0T9mLg0g5p1QWYIkjsn4IXtCoWJgj5F',
-      		'Content-Type': 'text/html'
-		},
-		url: parsed_url
-	}, function(error, response, body) {
+	if(res.statusCode == 200) {
 
-		if(!error && res.statusCode == 200) {
+		request({
+			headers: {
+				'X-Mashape-Key': 'BHWHnbH00kmsh2NYnEL0T9mLg0g5p1QWYIkjsn4IXtCoWJgj5F',
+	      		'Content-Type': 'application/json'
+			},
+			url: parsed_url
+		}, function(error, response, body) {
 
-			var data = {
-				response_type: 'in_channel',
-				text: body
-			};
+			//if(!error && res.statusCode == 200) {
 
-			res.send(data);
-		}
-	});
+				var data = {
+					response_type: 'in_channel',
+					text: body
+				};
+
+				res.send(data);
+			//}
+		});
+	}
 
 });
 
