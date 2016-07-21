@@ -36,7 +36,7 @@ app.post('/post', function(req, res){
 		request({
 			headers: {
 				'X-Mashape-Key': 'BHWHnbH00kmsh2NYnEL0T9mLg0g5p1QWYIkjsn4IXtCoWJgj5F',
-	      		'Content-Type': 'application/json'
+	      		//'Content-Type': 'application/json'
 			},
 			url: parsed_url
 		}, function(error, response, body) {
