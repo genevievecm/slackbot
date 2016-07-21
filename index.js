@@ -18,12 +18,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 3000);
 
 //Check that app is working
-app.get('/', function(req, res){
+app.get('/', (req, res) => {
   res.send('Running!');
 });
 
-app.post('/post', function(req, res){
-	var parsed_url = url.format({
+app.post('/post', (req, res) => {
+	let parsed_url = url.format({
 	    pathname: 'https://yoda.p.mashape.com/yoda',
 	    query: {
     		sentence: req.body.text
@@ -37,11 +37,11 @@ app.post('/post', function(req, res){
       		'Content-Type': 'text/plain; charset=utf-8'
 		},
 		url: parsed_url
-	}, function(error, response, body) {
+	}, (error, response, body) => {
 
 		if(!error && res.statusCode == 200) {
 
-			var data = {
+			let data = {
 				response_type: 'in_channel',
 				text: body
 			};
@@ -53,6 +53,6 @@ app.post('/post', function(req, res){
 	});
 });
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), () => {
   console.log('Node app is running on port', app.get('port'));
 });
