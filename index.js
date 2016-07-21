@@ -17,8 +17,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //use 3000 if it isn’t set
 app.set('port', process.env.PORT || 3000);
 
+//Check that app is working
 app.get('/', function(req, res){
-  res.send('It worxsdfsdfsdfdfdsfks!');
+  res.send('Running!');
 });
 
 app.post('/post', function(req, res){
@@ -27,25 +28,26 @@ app.post('/post', function(req, res){
 	    pathname: 'https://yoda.p.mashape.com/yoda',
 	    query: {
     		sentence: req.body.text
+    		//sentence: 'Hello, it\'s me. I was wondering if after all these years you\'d like to meet'
     	}
-  	}).replace(/%20/g, "+");;
+  	});
 
 	request({
 		headers: {
 			'X-Mashape-Key': 'BHWHnbH00kmsh2NYnEL0T9mLg0g5p1QWYIkjsn4IXtCoWJgj5F',
-      		'Content-Type': 'text/html; charset=utf-8'
+      		'Content-Type': 'text/html'
 		},
 		url: parsed_url
 	}, function(error, response, body) {
 
 		if(!error && res.statusCode == 200) {
 
-			var bodyResponse = {
+			var data = {
 				response_type: 'in_channel',
 				text: body
 			};
 
-			res.send(bodyResponse);
+			res.send(data);
 		}
 	});
 
