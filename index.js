@@ -27,7 +27,7 @@ app.post('/post', function(req, res){
 	    pathname: 'https://yoda.p.mashape.com/yoda',
 	    query: {
       		//sentence: 'hello it\'s me. I was wondering if maybe after all these years you\'d like to meet'
-    		sentence: req.text
+    		sentence: req.body.text
     	}
   	}).replace(/%20/g, "+");;
 
@@ -41,12 +41,12 @@ app.post('/post', function(req, res){
 
 		if(!error && res.statusCode == 200) {
 
-			var body = {
+			var bodyResponse = {
 				response_type: 'in_channel',
 				text: body
 			};
 
-			res.send(body);
+			res.send(bodyResponse);
 		}
 	});
 
