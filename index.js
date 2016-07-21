@@ -17,9 +17,9 @@ const request = require('request');
 //use 3000 if it isn’t set
 app.set('port', process.env.PORT || 3000);
 
-// app.get('/', function(req, res){
-//   res.send('It worxsdfsdfsdfdfdsfks!');
-// });
+app.get('/', function(req, res){
+  res.send('It worxsdfsdfsdfdfdsfks!');
+});
 
 app.post('/post', function(req, res){
 
