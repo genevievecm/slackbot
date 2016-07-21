@@ -9,9 +9,9 @@ const url = require('url');
 const request = require('request');
 
 //parse through JSON
-// const bodyParser = require('body-parser');
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //use whatever port is set in the environment variable, or
 //use 3000 if it isn’t set
