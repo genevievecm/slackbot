@@ -41,7 +41,7 @@ app.post('/post', function(req, res){
 			url: parsed_url
 		}, function(error, response, body) {
 
-			//if(!error && res.statusCode == 200) {
+			if(!error) {
 
 				var data = {
 					response_type: 'in_channel',
@@ -49,7 +49,9 @@ app.post('/post', function(req, res){
 				};
 
 				res.send(data);
-			//}
+			}else{
+				res.send(error);
+			}
 		});
 	}
 
