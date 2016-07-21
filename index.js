@@ -26,7 +26,6 @@ app.post('/post', function(req, res){
   	var parsed_url = url.format({
 	    pathname: 'https://yoda.p.mashape.com/yoda',
 	    query: {
-      		//sentence: 'hello it\'s me. I was wondering if maybe after all these years you\'d like to meet'
     		sentence: req.body.text
     	}
   	}).replace(/%20/g, "+");;
@@ -41,9 +40,11 @@ app.post('/post', function(req, res){
 
 		if(!error && res.statusCode == 200) {
 
+			var data = JSON.parse(body);
+
 			var bodyResponse = {
 				response_type: 'in_channel',
-				text: body
+				text: data
 			};
 
 			res.send(bodyResponse);
