@@ -7,12 +7,11 @@ const app = express();
 //other dependencies
 const url = require('url');
 const request = require('request');
-const http = require('http');
 
 //parse through JSON
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 //use whatever port is set in the environment variable, or
 //use 3000 if it isn’t set
@@ -27,20 +26,27 @@ app.post('/post', function(req, res){
   	var parsed_url = url.format({
 	    pathname: 'https://yoda.p.mashape.com/yoda',
 	    query: {
-	    	mashape_key: 'YKlfqMYuB3mshRHjFWJV8vaDW0zLp1ziHfsjsnZDUZK7YREDEX',
-      		sentence: 'hello its me'
+      		//sentence: 'hello it\'s me. I was wondering if maybe after all these years you\'d like to meet'
+    		sentence: req.body.text
     	}
-  	});
+  	}).replace(/%20/g, "+");;
 
-  	parsed_url = parsed_url.replace(/%20/g, "+");
-
-	request(parsed_url, function(error, response, body) {
-
-		res.send(body);
+	request({
+		headers: {
+			'X-Mashape-Key': 'BHWHnbH00kmsh2NYnEL0T9mLg0g5p1QWYIkjsn4IXtCoWJgj5F',
+      		'Content-Type': 'text/html; charset=utf-8'
+		},
+		url: parsed_url
+	}, function(error, response, body) {
 
 		if(!error && res.statusCode == 200) {
 
-			//res.send('heelllooooo');
+			var body = {
+				response_type: 'in_channel',
+				text: body
+			};
+
+			res.send(body);
 		}
 	});
 
@@ -49,11 +55,3 @@ app.post('/post', function(req, res){
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
-
-// These code snippets use an open-source library. http://unirest.io/nodejs
-// unirest.get("https://yoda.p.mashape.com/yoda?sentence=You+will+learn+how+to+speak+like+me+someday.++Oh+wait.")
-// .header("X-Mashape-Key", "YKlfqMYuB3mshRHjFWJV8vaDW0zLp1ziHfsjsnZDUZK7YREDEX")
-// .header("Accept", "text/plain")
-// .end(function (result) {
-//   console.log(result.status, result.headers, result.body);
-// });
