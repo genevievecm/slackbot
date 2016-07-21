@@ -27,34 +27,30 @@ app.post('/post', function(req, res){
 	    pathname: 'https://yoda.p.mashape.com/yoda',
 	    query: {
     		sentence: req.body.text
-    		//sentence: 'Hello, it\'s me. I was wondering if after all these years you\'d like to meet'
+    		//sentence: 'I MUST HAVE CALLED A THOUSAND TIMES'
     	}
   	});
 
-	if(res.statusCode == 200) {
+	request({
+		headers: {
+			'X-Mashape-Key': 'BHWHnbH00kmsh2NYnEL0T9mLg0g5p1QWYIkjsn4IXtCoWJgj5F',
+      		'Content-Type': 'text/plain; charset=utf-8'
+		},
+		url: parsed_url
+	}, function(error, response, body) {
 
-		request({
-			headers: {
-				'X-Mashape-Key': 'BHWHnbH00kmsh2NYnEL0T9mLg0g5p1QWYIkjsn4IXtCoWJgj5F',
-	      		'Content-Type': 'text/plain'
-			},
-			url: parsed_url
-		}, function(error, response, body) {
+		if(!error && res.statusCode == 200) {
 
-			if(!error) {
+			var data = {
+				response_type: 'in_channel',
+				text: body
+			};
 
-				var data = {
-					response_type: 'in_channel',
-					text: body
-				};
-
-				res.send(data);
-			}else{
-				res.send(error);
-			}
-		});
-	}
-
+			res.send(data);
+		}else{
+			res.send(error);
+		}
+	});
 });
 
 app.listen(app.get('port'), function() {
