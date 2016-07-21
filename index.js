@@ -40,14 +40,14 @@ app.post('/post', function(req, res){
 
 		if(!error && res.statusCode == 200) {
 
-			var data = JSON.parse(body);
+			//var data = JSON.parse(body);
 
 			var bodyResponse = {
 				response_type: 'in_channel',
 				text: data
 			};
 
-			res.send(bodyResponse);
+			res.send(body);
 		}
 	});
 
