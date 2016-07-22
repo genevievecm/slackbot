@@ -1,3 +1,11 @@
+/*
+ * This custom integration uses the Yoda Speak API
+ * https://market.mashape.com/ismaelc/yoda-speak/
+ *
+ * Notes from Yoda Speak developer:
+ * This API is a test in progress, and still sitting on a dev sandbox. Things might break quite often.
+ */
+
 'use strict';
 
 //express
@@ -8,7 +16,7 @@ const app = express();
 const url = require('url');
 const request = require('request');
 
-//parse through JSON
+//parses incoming text as JSON
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,32 +25,31 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //use 3000 if it isn’t set
 app.set('port', process.env.PORT || 3000);
 
-//Check that app is working
+//not needed, but confirms that app is working
 app.get('/', (req, res) => {
   res.send('Running!');
 });
 
+//when user enters slash command, POST to Slack endpoint
 app.post('/post', (req, res) => {
-	let parsed_url = url.format({
-	    pathname: 'https://yoda.p.mashape.com/yoda',
-	    query: {
-    		sentence: req.body.text
-    		//sentence: 'I MUST HAVE CALLED A THOUSAND TIMES'
-    	}
-  	});
 
 	request({
+		method: 'GET',
+		url: 'https://yoda.p.mashape.com/yoda',
+		qs: {
+			sentence: req.body.text //query string data
+			//sentence: 'I MUST HAVE CALLED A THOUSANDE TIMES.'
+		},
 		headers: {
 			'X-Mashape-Key': 'BHWHnbH00kmsh2NYnEL0T9mLg0g5p1QWYIkjsn4IXtCoWJgj5F',
-      		'Content-Type': 'text/plain; charset=utf-8'
-		},
-		url: parsed_url
+      		'Content-Type': 'application/json; charset=utf-8'
+		}
 	}, (error, response, body) => {
 
 		if(!error && res.statusCode == 200) {
 
 			let data = {
-				response_type: 'in_channel',
+				response_type: 'in_channel', //visible to everyone in channel
 				text: body
 			};
 
@@ -53,6 +60,7 @@ app.post('/post', (req, res) => {
 	});
 });
 
+//listen and log port in console
 app.listen(app.get('port'), () => {
   console.log('Node app is running on port', app.get('port'));
 });
