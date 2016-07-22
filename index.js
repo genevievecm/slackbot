@@ -37,8 +37,7 @@ app.post('/post', (req, res) => {
 		method: 'GET',
 		url: 'https://yoda.p.mashape.com/yoda',
 		qs: {
-			sentence: req.body.text //query string data
-			//sentence: 'I MUST HAVE CALLED A THOUSANDE TIMES.'
+			sentence: req.body.text //user input data from Slack
 		},
 		headers: {
 			'X-Mashape-Key': 'BHWHnbH00kmsh2NYnEL0T9mLg0g5p1QWYIkjsn4IXtCoWJgj5F',
@@ -49,7 +48,7 @@ app.post('/post', (req, res) => {
 		if(!error && res.statusCode == 200) {
 
 			let data = {
-				response_type: 'in_channel', //visible to everyone in channel
+				response_type: 'in_channel', //make visible to everyone in channel
 				text: body
 			};
 
