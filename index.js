@@ -1,9 +1,7 @@
 /*
- * This custom integration uses the Yoda Speak API
+ * This custom integration uses the Yoda Speak Web Service
  * https://market.mashape.com/ismaelc/yoda-speak/
  *
- * Notes from Yoda Speak developer:
- * This API is a test in progress, and still sitting on a dev sandbox. Things might break quite often.
  */
 
 'use strict';
@@ -15,7 +13,7 @@ const app = express();
 //other dependencies
 const url = require('url');
 const request = require('request');
-const soapy = require('./soap');
+const soap = require('soap');
 
 //parses incoming text as JSON
 const bodyParser = require('body-parser');
@@ -33,34 +31,26 @@ app.get('/', (req, res) => {
 
 //when user enters slash command, POST to Slack endpoint
 app.post('/post', (req, res) => {
+	
+	let wsdl = 'http://www.yodaspeak.co.uk/webservice/yodatalk.php?wsdl';
+	let args = {name: req.body.text};
+	
+	soap.createClient(wsdl, function(err, client) {
+	  	client.yodaTalk(args, function(err, result) {
 
+		    if (!err && res.statusCode == 200){
+	          
+		    	let data = {
+					response_type: 'in_channel', //make visible to everyone in channel
+					text: result
+				};
 
-	var x = soapy.yodaSpeak('hello how are you');
-	console.log(x);
-	// request({
-	// 	method: 'GET',
-	// 	url: 'https://yoda.p.mashape.com/yoda',
-	// 	qs: {
-	// 		sentence: req.body.text //user input data from Slack
-	// 	},
-	// 	headers: {
-	// 		'X-Mashape-Key': 'BHWHnbH00kmsh2NYnEL0T9mLg0g5p1QWYIkjsn4IXtCoWJgj5F',
- //      		'Content-Type': 'application/json; charset=utf-8'
-	// 	}
-	// }, (error, response, body) => {
-
-	// 	if(!error && res.statusCode == 200) {
-
-	// 		let data = {
-	// 			response_type: 'in_channel', //make visible to everyone in channel
-	// 			text: body
-	// 		};
-
-	// 		res.send(data);
-	// 	}else{
-	// 		res.send(error);
-	// 	}
-	// });
+				res.send(data);
+			}else{
+				res.send(err);
+			}
+		});
+	});
 });
 
 //listen and log port in console
